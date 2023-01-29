@@ -147,7 +147,7 @@ static int add_tcp_conntrack(const uint32_t srcip[4], const uint32_t dstip[4],
 {
     if (!(srcip && srcport && dstip && dstport))
         return FALSE;
-
+    debug("Trying to add conntrack...\n");
     tcp_connrecord_t *tmp_connrecord = malloc(sizeof(tcp_connrecord_t));
     construct_key(srcip, dstip, srcport, dstport, tmp_connrecord->key, is_ipv6);
 
@@ -175,7 +175,7 @@ static void tcp_cleanup() {
         last_cleanup = time(NULL);
 
         HASH_ITER(hh, conntrack, tmp_connrecord, tmp_connrecord2) {
-            debug("tmp_connrecord not NULL\n");
+			debug("tmp_connrecord not NULL\n");
             if (difftime(last_cleanup, tmp_connrecord->time) >= TCP_CLEANUP_INTERVAL_SEC) {
                 HASH_DEL(conntrack, tmp_connrecord);
                 free(tmp_connrecord);

@@ -61,6 +61,19 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
                    "(ipv6.SrcAddr < ff00::0 or ipv6.SrcAddr > ffff::0)" \
                    ")"
 
+#define FORWARD_DIVERT_NO_LOCALNETSv4_DST "(" \
+                   "(ip.DstAddr < 127.0.0.1 or ip.DstAddr > 127.255.255.255) and " \
+                   "(ip.DstAddr < 10.0.0.0 or ip.DstAddr > 10.255.255.255) and " \
+                   "(ip.DstAddr < 172.16.0.0 or ip.DstAddr > 172.31.255.255) and " \
+                   "(ip.DstAddr < 169.254.0.0 or ip.DstAddr > 169.254.255.255)" \
+                   ")"
+#define FORWARD_DIVERT_NO_LOCALNETSv4_SRC "(" \
+                   "(ip.SrcAddr < 127.0.0.1 or ip.SrcAddr > 127.255.255.255) and " \
+                   "(ip.SrcAddr < 10.0.0.0 or ip.SrcAddr > 10.255.255.255) and " \
+                   "(ip.SrcAddr < 172.16.0.0 or ip.SrcAddr > 172.31.255.255) and " \
+                   "(ip.SrcAddr < 169.254.0.0 or ip.SrcAddr > 169.254.255.255)" \
+                   ")"
+
 /* #IPID# is a template to find&replace */
 #define IPID_TEMPLATE "#IPID#"
 #define MAXPAYLOADSIZE_TEMPLATE "#MAXPAYLOADSIZE#"
@@ -83,8 +96,8 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
          "(" DIVERT_NO_LOCALNETSv4_DST " or " DIVERT_NO_LOCALNETSv6_DST "))" \
         "))"
 #define FORWARD_FILTER_STRING_TEMPLATE \
-        "(tcp and !impostor " MAXPAYLOADSIZE_TEMPLATE " and " \
-        "((((ip.DstAddr >= " SUBNET_START_TEMPLATE ") and (ip.DstAddr < " SUBNET_END_TEMPLATE ")) and (" \
+        "(tcp " MAXPAYLOADSIZE_TEMPLATE " and " \
+        "((((ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255)) and (" \
          "(" \
           "(" \
            "(ipv6 or (ip.Id >= 0x0 and ip.Id <= 0xF) " IPID_TEMPLATE \
@@ -93,10 +106,10 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
           ") or " \
           "((tcp.SrcPort == 80 or tcp.SrcPort == 443) and tcp.Ack and tcp.Syn)" \
          ")" \
-         " and (" DIVERT_NO_LOCALNETSv4_SRC " or " DIVERT_NO_LOCALNETSv6_SRC "))) or " \
-        "(((ip.SrcAddr >= " SUBNET_START_TEMPLATE ") and (ip.SrcAddr < " SUBNET_END_TEMPLATE ")) and " \
+         " and (" FORWARD_DIVERT_NO_LOCALNETSv4_SRC " or " DIVERT_NO_LOCALNETSv6_SRC "))) or " \
+        "(((ip.DstAddr < 192.168.1.1) or (ip.DstAddr > 192.168.1.255)) and " \
          "(tcp.DstPort == 80 or tcp.DstPort == 443) and tcp.Ack and " \
-         "(" DIVERT_NO_LOCALNETSv4_DST " or " DIVERT_NO_LOCALNETSv6_DST "))" \
+         "(" FORWARD_DIVERT_NO_LOCALNETSv4_DST " or " DIVERT_NO_LOCALNETSv6_DST "))" \
         "))"
 #define FILTER_PASSIVE_STRING_TEMPLATE "inbound and ip and tcp and " \
         "!impostor and !loopback and " \
@@ -109,7 +122,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
         "!impostor and " \
         "((ip.Id <= 0xF and ip.Id >= 0x0) " IPID_TEMPLATE ") and " \
         "(tcp.SrcPort == 443 or tcp.SrcPort == 80) and tcp.Rst and " \
-        DIVERT_NO_LOCALNETSv4_SRC
+        FORWARD_DIVERT_NO_LOCALNETSv4_SRC
 
 #define SET_HTTP_FRAGMENT_SIZE_OPTION(fragment_size) do { \
     if (!http_fragment_size) { \
@@ -614,8 +627,8 @@ UINT32 from_big_endian_to_little_endian(UINT32 num) {
 int IsOutbound(int is_forward, UINT32 src, WINDIVERT_ADDRESS addr) {
     if (!is_forward)
         return addr.Outbound;
-    UINT32 subnet_start_num = from_big_endian_to_little_endian(inet_addr(subnet_start)),
-        subnet_end_num = from_big_endian_to_little_endian(inet_addr(subnet_end));
+    UINT32 subnet_start_num = from_big_endian_to_little_endian(inet_addr("192.168.1.1")),
+        subnet_end_num = from_big_endian_to_little_endian(inet_addr("192.168.1.255"));
     src = from_big_endian_to_little_endian(src);
     return (src >= subnet_start_num && src <= subnet_end_num);
 }

@@ -1,0 +1,919 @@
+GoodbyeDPI v0.2.2: Passive DPI blocker and Active DPI circumvention utility
+https://github.com/ValdikSS/GoodbyeDPI
+Block passive: 0
+Fragment HTTP: 2
+Fragment persistent HTTP: 2
+Fragment HTTPS: 2
+Native fragmentation (splitting): 1
+Fragments sending in reverse: 1
+hoSt: 0
+Host no space: 0
+Additional space: 0
+Mix Host: 0
+HTTP AllPorts: 0
+HTTP Persistent Nowait: 1
+DNS redirect: 0
+DNSv6 redirect: 0
+Allow missing SNI: 0
+Fake requests, TTL: auto (fixed: 0, auto: 1-4-10, min distance: 3)
+Fake requests, wrong checksum: 0
+Fake requests, wrong SEQ/ACK: 0
+Max payload size: 1200
+Opening filter
+Filter activated, GoodbyeDPI is now running!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=60! SrcAddr = 1751597279, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 47928
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 3745539944:443 - 1284090048:47928
+Re-injecting!
+Got inbound packet, len=60! SrcAddr = 1089053066, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 47966
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 2325866816:443 - 1284090048:47966
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=569! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: www.pinterest.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 47928
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=647! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: play.google.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 47966
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=116! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=132! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=150! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=1037! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=147! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=600! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=87! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=87! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=87! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=162! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got inbound packet, len=60! SrcAddr = 1751597279, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 47980
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 3745539944:443 - 1284090048:47980
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=569! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: s.pinimg.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 47980
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=135! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=132! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=139! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=139! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=137! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=139! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=143! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=189! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=60! SrcAddr = 1751597279, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 47982
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 3745539944:443 - 1284090048:47982
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=569! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: s.pinimg.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 47982
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=132! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=150! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=375! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=83! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=127! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=127! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232270668, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!

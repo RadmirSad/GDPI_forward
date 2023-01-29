@@ -1,0 +1,2360 @@
+Filter activated, GoodbyeDPI is now running!
+Got outbound packet, len=295! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2890119318, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50452
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 2528658348:443 - 33663168:50452
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1746228011, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50451
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 726865256:443 - 33663168:50451
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=592! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: static.t-ru.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50452
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: rutracker.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50451
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=558! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=125! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=445! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=144! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=134! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=44! SrcAddr = 3276968500, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50453
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 882004675:443 - 33663168:50453
+Re-injecting!
+Got inbound packet, len=44! SrcAddr = 3276968500, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50454
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 882004675:443 - 33663168:50454
+Re-injecting!
+Got inbound packet, len=44! SrcAddr = 3276968500, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50455
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 882004675:443 - 33663168:50455
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 3239140701, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50456
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 1566380481:443 - 33663168:50456
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 3161613290, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50458
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3932385980:443 - 33663168:50458
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1745893733, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50459
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 1698238568:443 - 33663168:50459
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: rutrk.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50453
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got inbound packet, len=48! SrcAddr = 3335749433, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50457
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 964678598:443 - 33663168:50457
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: rutrk.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50454
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: rutrk.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50455
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: cdn-edge.kwork.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50456
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: cdn.admitad-connect.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50458
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got inbound packet, len=48! SrcAddr = 1745893733, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50461
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 1698238568:443 - 33663168:50461
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: static.cloudflareinsights.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50459
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got inbound packet, len=48! SrcAddr = 3335749433, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50460
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 964678598:443 - 33663168:50460
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: robinbob.in
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50457
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2539979237, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50462
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3842074007:443 - 33663168:50462
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=120! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=454! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: static.cloudflareinsights.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50461
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=133! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=145! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=489! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: robinbob.in
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50460
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=464! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2539979237, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50463
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3842074007:443 - 33663168:50463
+Re-injecting!
+Got outbound packet, len=745! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: cdn.jsdelivr.net
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50462
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=644! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=644! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=646! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=78! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: cdn.jsdelivr.net
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50463
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2152459585, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50464
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 1106070400:443 - 33663168:50464
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=416! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1089053022, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50465
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 1587669312:443 - 33663168:50465
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2152459585, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50464
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Not added TCP conntrack 1106070400:443 - 33663168:50464
+tcp_handle_incoming
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1490340294, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50466
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3335115864:443 - 33663168:50466
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2152459585, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50467
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 1106070400:443 - 33663168:50467
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2152459585, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50467
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Not added TCP conntrack 1106070400:443 - 33663168:50467
+tcp_handle_incoming
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1490340294, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50468
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3335115864:443 - 33663168:50468
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1089053022, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50465
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Not added TCP conntrack 1587669312:443 - 33663168:50465
+tcp_handle_incoming
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: code.createjs.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50464
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: www.gstatic.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50465
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: counter.yadro.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50466
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: code.createjs.com
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50467
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: counter.yadro.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50468
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=145! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=430! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=114! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1490340294, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50466
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+not conntrack
+Added TCP conntrack 3335115864:443 - 33663168:50466
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1476066167, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50469
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 2013002327:443 - 33663168:50469
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1490340294, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50468
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 3335115864:443 - 33663168:50468
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=78! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=763! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: mc.yandex.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50469
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got inbound packet, len=48! SrcAddr = 1476066167, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50470
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 2013002327:443 - 33663168:50470
+Re-injecting!
+Got outbound packet, len=52! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1476066167, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50471
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 2013002327:443 - 33663168:50471
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1476066167, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50472
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 2013002327:443 - 33663168:50472
+Re-injecting!
+Got outbound packet, len=748! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=166! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: mc.yandex.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50470
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=120! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=75! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=561! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=186! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: mc.yandex.ru
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50472
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=120! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 2500195347, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50473
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 334759317:443 - 33663168:50473
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: mc.webvisor.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50473
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=120! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=632! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=237! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=366! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got inbound packet, len=48! SrcAddr = 1746228011, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+INBOUND SYN+ACK packet
+do_fake_packet
+trying to add TCP srcport = 443, dstport = 50474
+Trying to add conntrack...
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key key not found
+Added TCP conntrack 726865256:443 - 33663168:50474
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=557! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+(packet_dataLen == 2 && memcmp(packet_data, x16x03, 2) == 0) ||
+(packet_dataLen >= 3 && memcmp(packet_data, x16x03x01, 3) == 0)
+Blocked HTTPS website SNI: rutracker.org
+do_blacklist && sni_ok && blackwhitelist_check_hostname
+do_fake_packet
+Construct key enter
+Constructing key
+Construct key end
+check_get_tcp_conntrack_key found key
+Deconstruct key enter
+Deconstructing key
+Deconstruct key end
+____tcp_handle_outgoing TRUE: srcport = 50474
+Fake packet: OKdo_native_frag
+should_reinject && should_recalc_checksum && do_native_frag
+do_fragment_https && ppTcpHdr->DstPort != htons(80)
+current_fragment_size
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+Re-injecting!
+Got outbound packet, len=104! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=138! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=429! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=71! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 2, packet_v4: 1, packet_v6: 0
+ipv4_tcp_data or ipv6_tcp_data
+OUTBOUND && 1
+Re-injecting!
+Got outbound packet, len=40! SrcAddr = 3232235778, StartSrc = 3232270593, EndSrc = 3232270847
+packet_type: 1, packet_v4: 1, packet_v6: 0
+TCP packet without data
+
+Re-injecting!
+G
