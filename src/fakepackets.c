@@ -135,7 +135,7 @@ static int send_fake_data(const HANDLE w_filter,
         packetLen_new,
         NULL, &addr_new
     );
-    debug("Fake packet: OK");
+    debug("Fake packet: OK\n");
 
     return 0;
 }

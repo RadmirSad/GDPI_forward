@@ -79,10 +79,10 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 #define MAXPAYLOADSIZE_TEMPLATE "#MAXPAYLOADSIZE#"
 #define SUBNET_START_TEMPLATE "#SUBNET_START#"
 #define SUBNET_END_TEMPLATE "#SUBNET_END#"
-#define FORWARD_INBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
+#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
+        "(ip.SrcAddr < 192.168.137.0 or ip.SrcAddr > 192.168.137.255)"
+#define FORWARD_OUTBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
         "(ip.DstAddr < 192.168.137.0 or ip.DstAddr > 192.168.137.255)"
-#define FORWARD_OUTBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
-        "(ip.SrcAddr < 192.168.137.1 or ip.SrcAddr > 192.168.137.255)" 
 #define FILTER_STRING_TEMPLATE \
         "(tcp and !impostor and !loopback " MAXPAYLOADSIZE_TEMPLATE " and " \
         "((inbound and (" \
@@ -1600,7 +1600,7 @@ int main(int argc, char *argv[]) {
     w_filter = filters[filter_num];
     ++filter_num;
     */
-    filters[filter_num] = init(filter_forward_string, 0, 0);
+    filters[filter_num] = init(filter_forward_string, 0, 1);
 
     w_forward_filter = filters[filter_num];
     ++filter_num;

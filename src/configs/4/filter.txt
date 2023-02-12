@@ -1,0 +1,6 @@
+#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
+        "(ip.SrcAddr < 192.168.137.0 or ip.SrcAddr > 192.168.137.255)"
+#define FORWARD_OUTBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
+        "(ip.DstAddr < 192.168.137.0 or ip.DstAddr > 192.168.137.255)"
+		
++ !impostor
