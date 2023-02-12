@@ -79,6 +79,10 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 #define MAXPAYLOADSIZE_TEMPLATE "#MAXPAYLOADSIZE#"
 #define SUBNET_START_TEMPLATE "#SUBNET_START#"
 #define SUBNET_END_TEMPLATE "#SUBNET_END#"
+#define FORWARD_INBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
+        "(ip.DstAddr < 192.168.137.0 or ip.DstAddr > 192.168.137.255)"
+#define FORWARD_OUTBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
+        "(ip.SrcAddr < 192.168.137.1 or ip.SrcAddr > 192.168.137.255)" 
 #define FILTER_STRING_TEMPLATE \
         "(tcp and !impostor and !loopback " MAXPAYLOADSIZE_TEMPLATE " and " \
         "((inbound and (" \
@@ -97,7 +101,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
         "))"
 #define FORWARD_FILTER_STRING_TEMPLATE \
         "(tcp " MAXPAYLOADSIZE_TEMPLATE " and " \
-        "((((ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255)) and (" \
+        "(((" FORWARD_INBOUND ") and (" \
          "(" \
           "(" \
            "(ipv6 or (ip.Id >= 0x0 and ip.Id <= 0xF) " IPID_TEMPLATE \
@@ -107,7 +111,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
           "((tcp.SrcPort == 80 or tcp.SrcPort == 443) and tcp.Ack and tcp.Syn)" \
          ")" \
          " and (" FORWARD_DIVERT_NO_LOCALNETSv4_SRC " or " DIVERT_NO_LOCALNETSv6_SRC "))) or " \
-        "(((ip.DstAddr < 192.168.1.1) or (ip.DstAddr > 192.168.1.255)) and " \
+        "((" FORWARD_OUTBOUND ") and " \
          "(tcp.DstPort == 80 or tcp.DstPort == 443) and tcp.Ack and " \
          "(" FORWARD_DIVERT_NO_LOCALNETSv4_DST " or " DIVERT_NO_LOCALNETSv6_DST "))" \
         "))"
@@ -338,6 +342,7 @@ BYTE atoub(const char *str, const char *msg) {
 static HANDLE init(char *filter, UINT64 flags, int is_forward) {
     LPTSTR errormessage = NULL;
     DWORD errorcode = 0;
+    debug("%s\n", filter);
     filter = WinDivertOpen(filter, is_forward ? WINDIVERT_LAYER_NETWORK_FORWARD : WINDIVERT_LAYER_NETWORK, 0, flags);
     if (filter != INVALID_HANDLE_VALUE)
         return filter;
@@ -704,10 +709,16 @@ void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT
         }
     }
     addr.Outbound = IsOutbound(is_forward, ppIpHdr->SrcAddr, addr);
-    debug("Got %s packet, len=%d! SrcAddr = %u, StartSrc = %u, EndSrc = %u\n", addr.Outbound ? "outbound" : "inbound",
-        packetLen, from_big_endian_to_little_endian(ppIpHdr->SrcAddr), from_big_endian_to_little_endian(inet_addr(subnet_start)),
-        from_big_endian_to_little_endian(inet_addr(subnet_end)));
-
+    char srcAddr[INET_ADDRSTRLEN], destAddr[INET_ADDRSTRLEN];
+    if (!inet_ntop(AF_INET, &(ppIpHdr->SrcAddr), srcAddr, sizeof(srcAddr)))
+        debug("Didn't return char src");
+    if (!inet_ntop(AF_INET, &(ppIpHdr->DstAddr), destAddr, sizeof(destAddr)))
+        debug("Didn't return char dest");
+    debug("Got %s packet, len=%d! SrcAddr = %s, DstAddr = %s, StartSrc = %s, EndSrc = %s\n", addr.Outbound ? "outbound" : "inbound",
+        packetLen, srcAddr, destAddr,
+        "192.168.1.0", "192.168.1.255");
+        //from_big_endian_to_little_endian(inet_addr(subnet_start)),
+        //from_big_endian_to_little_endian(inet_addr(subnet_end)));
     debug("packet_type: %d, packet_v4: %d, packet_v6: %d\n", packet_type, packet_v4, packet_v6);
     if (packet_v6 && is_forward) {
         debug("packet wasn\'t analyzed\n");
@@ -1589,7 +1600,7 @@ int main(int argc, char *argv[]) {
     w_filter = filters[filter_num];
     ++filter_num;
     */
-    filters[filter_num] = init(filter_forward_string, 0, 1);
+    filters[filter_num] = init(filter_forward_string, 0, 0);
 
     w_forward_filter = filters[filter_num];
     ++filter_num;
