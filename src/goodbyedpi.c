@@ -13,6 +13,7 @@
 #include <ws2tcpip.h>
 #include <WinSock2.h>
 #include <winreg.h>
+#include <pthread.h>
 #include "windivert.h"
 #include "goodbyedpi.h"
 #include "utils/repl_str.h"
@@ -31,6 +32,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 
 #define MAX_FILTERS 4
 
+/*
 #define DIVERT_NO_LOCALNETSv4_DST "(" \
                    "(ip.DstAddr < 127.0.0.1 or ip.DstAddr > 127.255.255.255) and " \
                    "(ip.DstAddr < 10.0.0.0 or ip.DstAddr > 10.255.255.255) and " \
@@ -42,6 +44,19 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
                    "(ip.SrcAddr < 127.0.0.1 or ip.SrcAddr > 127.255.255.255) and " \
                    "(ip.SrcAddr < 10.0.0.0 or ip.SrcAddr > 10.255.255.255) and " \
                    "(ip.SrcAddr < 192.168.0.0 or ip.SrcAddr > 192.168.255.255) and " \
+                   "(ip.SrcAddr < 172.16.0.0 or ip.SrcAddr > 172.31.255.255) and " \
+                   "(ip.SrcAddr < 169.254.0.0 or ip.SrcAddr > 169.254.255.255)" \
+                   ")"
+                   */
+#define DIVERT_NO_LOCALNETSv4_DST "(" \
+                   "(ip.DstAddr < 127.0.0.1 or ip.DstAddr > 127.255.255.255) and " \
+                   "(ip.DstAddr < 10.0.0.0 or ip.DstAddr > 10.255.255.255) and " \
+                   "(ip.DstAddr < 172.16.0.0 or ip.DstAddr > 172.31.255.255) and " \
+                   "(ip.DstAddr < 169.254.0.0 or ip.DstAddr > 169.254.255.255)" \
+                   ")"
+#define DIVERT_NO_LOCALNETSv4_SRC "(" \
+                   "(ip.SrcAddr < 127.0.0.1 or ip.SrcAddr > 127.255.255.255) and " \
+                   "(ip.SrcAddr < 10.0.0.0 or ip.SrcAddr > 10.255.255.255) and " \
                    "(ip.SrcAddr < 172.16.0.0 or ip.SrcAddr > 172.31.255.255) and " \
                    "(ip.SrcAddr < 169.254.0.0 or ip.SrcAddr > 169.254.255.255)" \
                    ")"
@@ -79,10 +94,16 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 #define MAXPAYLOADSIZE_TEMPLATE "#MAXPAYLOADSIZE#"
 #define SUBNET_START_TEMPLATE "#SUBNET_START#"
 #define SUBNET_END_TEMPLATE "#SUBNET_END#"
-#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
+/*#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
         "(ip.SrcAddr < 192.168.137.0 or ip.SrcAddr > 192.168.137.255)"
 #define FORWARD_OUTBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
         "(ip.DstAddr < 192.168.137.0 or ip.DstAddr > 192.168.137.255)"
+        */
+
+#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
+        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
+#define FORWARD_OUTBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
+        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
 #define FILTER_STRING_TEMPLATE \
         "(tcp and !impostor and !loopback " MAXPAYLOADSIZE_TEMPLATE " and " \
         "((inbound and (" \
@@ -123,7 +144,6 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 #define FILTER_PASSIVE_FORWARD_STRING_TEMPLATE \
         "((ip.DstAddr >= " SUBNET_START_TEMPLATE ") and (ip.DstAddr < " SUBNET_END_TEMPLATE "))" \
         " and ip and tcp and " \
-        "!impostor and " \
         "((ip.Id <= 0xF and ip.Id >= 0x0) " IPID_TEMPLATE ") and " \
         "(tcp.SrcPort == 443 or tcp.SrcPort == 80) and tcp.Rst and " \
         FORWARD_DIVERT_NO_LOCALNETSv4_SRC
@@ -1102,13 +1122,60 @@ void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT
     }
 }
 
-int main(int argc, char *argv[]) {
-    int i;
-    int opt;
-    HANDLE w_filter = NULL, w_forward_filter = NULL;
+typedef struct ThreadFunctionArguments {
+    HANDLE filter;
+    IntConsts consts;
+} ARGS, * PARGS;
+
+DWORD WinDivertRecvStraight(LPVOID args)
+{
     WINDIVERT_ADDRESS addr;
     char packet[MAX_PACKET_SIZE];
     UINT packetLen;
+    PARGS data = (PARGS)args;
+    debug("Straight\n");
+
+    while (1) {
+        if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
+            AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 0);
+        }
+        else {
+            // error, ignore
+            if (!exiting)
+                printf("Error receiving packet!\n");
+            break;
+        }
+    }
+    return 1;
+}
+
+DWORD WinDivertRecvForward(LPVOID args)
+{
+    WINDIVERT_ADDRESS addr;
+    char packet[MAX_PACKET_SIZE];
+    UINT packetLen;
+    PARGS data = (PARGS)args;
+    debug("Forward\n");
+
+    while (1) {
+        if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
+            AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 1);
+        }
+        else {
+            // error, ignore
+            if (!exiting)
+                printf("Error receiving packet!\n");
+            break;
+        }
+    }
+    return 1;
+}
+
+int main(int argc, char *argv[])
+{
+    int i;
+    int opt;
+    HANDLE w_filter = NULL, w_forward_filter = NULL;
 
     int do_passivedpi = 0, do_fragment_http = 0,
         do_fragment_http_persistent = 0,
@@ -1600,6 +1667,12 @@ int main(int argc, char *argv[]) {
     w_filter = filters[filter_num];
     ++filter_num;
     */
+
+    filters[filter_num] = init(filter_string, 0, 0);
+
+    w_filter = filters[filter_num];
+    ++filter_num;
+
     filters[filter_num] = init(filter_forward_string, 0, 1);
 
     w_forward_filter = filters[filter_num];
@@ -1621,27 +1694,21 @@ int main(int argc, char *argv[]) {
         auto_ttl_1, auto_ttl_2, auto_ttl_max, do_wrong_chksum, do_wrong_seq, do_reverse_frag
     };
 
-    while (1) {
-        if (WinDivertRecv(w_forward_filter, packet, sizeof(packet), &packetLen, &addr)) {
-            AnalyzePacket(w_forward_filter, packet, packetLen, addr, consts, 1);
-        }
-        else {
-            // error, ignore
-            if (!exiting)
-                printf("Error receiving packet!\n");
-            break;
-        }
-        /*
-        
-        if (WinDivertRecv(w_filter, packet, sizeof(packet), &packetLen, &addr)) {
-            AnalyzePacket(w_filter, packet, packetLen, addr, consts, 0);
-        }
-        else {
-            // error, ignore
-            if (!exiting)
-                printf("Error receiving packet!\n");
-            break;
-        }
-        */
-    }
+    PARGS pStraightArguments = (PARGS) malloc(sizeof(ARGS)), pForwardArguments = (PARGS)malloc(sizeof(ARGS));
+    pStraightArguments->consts = consts;
+    pStraightArguments->filter = w_filter;
+    pForwardArguments->consts = consts;
+    pForwardArguments->filter = w_forward_filter;
+    
+    DWORD dwStraightThreadId, dwForwardThreadId;
+    HANDLE hThreadArray[2] = { 
+        CreateThread(NULL, 0, WinDivertRecvStraight, pStraightArguments, 0, &dwStraightThreadId),
+        CreateThread(NULL, 0, WinDivertRecvForward, pForwardArguments, 0, &dwForwardThreadId)
+    };
+
+    WaitForMultipleObjects(2, hThreadArray, TRUE, INFINITE);
+    CloseHandle(hThreadArray[0]);
+    CloseHandle(hThreadArray[1]);
+    free(pStraightArguments);
+    free(pForwardArguments);
 }
