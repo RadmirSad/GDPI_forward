@@ -13,7 +13,6 @@
 #include <ws2tcpip.h>
 #include <WinSock2.h>
 #include <winreg.h>
-#include <pthread.h>
 #include "windivert.h"
 #include "goodbyedpi.h"
 #include "utils/repl_str.h"
@@ -28,7 +27,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 
 #define GOODBYEDPI_VERSION "v0.2.2"
 
-#define die() do { sleep(20); exit(EXIT_FAILURE); } while (0)
+#define die() do { sleep(20); exit(EXIT_FAILURE); } while (FALSE)
 
 #define MAX_FILTERS 4
 
@@ -94,16 +93,15 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 #define MAXPAYLOADSIZE_TEMPLATE "#MAXPAYLOADSIZE#"
 #define SUBNET_START_TEMPLATE "#SUBNET_START#"
 #define SUBNET_END_TEMPLATE "#SUBNET_END#"
-/*#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
-        "(ip.SrcAddr < 192.168.137.0 or ip.SrcAddr > 192.168.137.255)"
+#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.1.255) and " \
+        "(ip.SrcAddr < " SUBNET_START_TEMPLATE " or ip.SrcAddr > " SUBNET_END_TEMPLATE ")"
 #define FORWARD_OUTBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
-        "(ip.DstAddr < 192.168.137.0 or ip.DstAddr > 192.168.137.255)"
-        */
+        "(ip.DstAddr < " SUBNET_START_TEMPLATE " or ip.DstAddr > " SUBNET_END_TEMPLATE ")"
 
-#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
-        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
-#define FORWARD_OUTBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
-        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
+//#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
+//        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
+//#define FORWARD_OUTBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
+//        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
 #define FILTER_STRING_TEMPLATE \
         "(tcp and !impostor and !loopback " MAXPAYLOADSIZE_TEMPLATE " and " \
         "((inbound and (" \
@@ -158,7 +156,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
             http_fragment_size \
         ); \
     } \
-} while (0)
+} while (FALSE)
 
 #define TCP_HANDLE_OUTGOING_TTL_PARSE_PACKET_IF() \
     if ((packet_v4 && tcp_handle_outgoing(&ppIpHdr->SrcAddr, &ppIpHdr->DstAddr, \
@@ -193,7 +191,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
     if (consts.should_send_fake) \
         func(w_filter, &addr, packet, packetLen, packet_v6, \
              consts.ttl_of_fake_packet, consts.do_wrong_chksum, consts.do_wrong_seq); \
-} while (0)
+} while (FALSE)
 
 
 static int running_from_service = 0;
@@ -675,10 +673,37 @@ typedef struct {
     int do_wrong_chksum, do_wrong_seq, do_reverse_frag;
 } IntConsts;
 
-void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_ADDRESS addr,
+const size_t BUFFER_SIZE = 5;
+static uint32_t bufferDestIP[BUFFER_SIZE];
+
+size_t FindInsertPlace()
+{
+
+}
+
+void Insert(uint32_t ip, size_t index)
+{
+    if (index > BUFFER_SIZE)
+    {
+        if (!isFull())
+            bufferDestIP[itemCount++] = ip;
+        return;
+    }
+    bufferDestIP[index] = ip;
+}
+
+size_t Find(uint32_t ip)
+{
+    for (size_t index = 0; index < itemCount; ++index)
+        if (ip == bufferDestIP[index])
+            return index;
+    return INT_MAX;
+}
+
+int AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_ADDRESS addr,
     IntConsts consts, int is_forward) {
     int sni_ok = 0, should_reinject = 1, should_recalc_checksum = 0,
-        http_req_fragmented, packet_v4 = 0, packet_v6 = 0;
+        http_req_fragmented, packet_v4 = 0, packet_v6 = 0, packet_is_not_found = FALSE;
 
     PWINDIVERT_IPHDR ppIpHdr = (PWINDIVERT_IPHDR)NULL;
     PWINDIVERT_IPV6HDR ppIpV6Hdr = (PWINDIVERT_IPV6HDR)NULL;
@@ -742,7 +767,7 @@ void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT
     debug("packet_type: %d, packet_v4: %d, packet_v6: %d\n", packet_type, packet_v4, packet_v6);
     if (packet_v6 && is_forward) {
         debug("packet wasn\'t analyzed\n");
-        return;
+        return packet_is_not_found;
     }
 
     if (packet_type == ipv4_tcp_data || packet_type == ipv6_tcp_data) {
@@ -980,7 +1005,8 @@ void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT
                     packet_dataLen, packet_v4, packet_v6,
                     ppIpHdr, ppIpV6Hdr, ppTcpHdr,
                     current_fragment_size, !consts.do_reverse_frag);
-                return;
+
+                return packet_is_not_found;
             }
         }
     } /* Handle TCP packet with data */
@@ -1120,12 +1146,17 @@ void AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT
         }
         WinDivertSend(w_filter, packet, packetLen, NULL, &addr);
     }
+
+    return packet_is_not_found;
 }
 
 typedef struct ThreadFunctionArguments {
     HANDLE filter;
     IntConsts consts;
 } ARGS, * PARGS;
+
+static int global_packet_is_not_found = FALSE;
+HANDLE receivingPacketMutex;
 
 DWORD WinDivertRecvStraight(LPVOID args)
 {
@@ -1135,9 +1166,18 @@ DWORD WinDivertRecvStraight(LPVOID args)
     PARGS data = (PARGS)args;
     debug("Straight\n");
 
-    while (1) {
+    while (TRUE) {
         if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
-            AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 0);
+            int packet_is_not_found = AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 0);
+
+            DWORD waitReadFlag = WaitForSingleObject(receivingPacketMutex, INFINITE);
+            if (packet_is_not_found || global_packet_is_not_found)
+            {
+                global_packet_is_not_found = TRUE;
+                ReleaseMutex(receivingPacketMutex);
+                break;
+            }
+            ReleaseMutex(receivingPacketMutex);
         }
         else {
             // error, ignore
@@ -1157,9 +1197,18 @@ DWORD WinDivertRecvForward(LPVOID args)
     PARGS data = (PARGS)args;
     debug("Forward\n");
 
-    while (1) {
+    while (TRUE) {
         if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
-            AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 1);
+            int packet_is_not_found = AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 1);
+
+            DWORD waitReadFlag = WaitForSingleObject(receivingPacketMutex, INFINITE);
+            if (packet_is_not_found || global_packet_is_not_found)
+            {
+                global_packet_is_not_found = TRUE;
+                ReleaseMutex(receivingPacketMutex);
+                break;
+            }
+            ReleaseMutex(receivingPacketMutex);
         }
         else {
             // error, ignore
@@ -1171,7 +1220,7 @@ DWORD WinDivertRecvForward(LPVOID args)
     return 1;
 }
 
-int main(int argc, char *argv[])
+void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc, char* const argv[])
 {
     int i;
     int opt;
@@ -1202,56 +1251,10 @@ int main(int argc, char *argv[])
     BYTE auto_ttl_2 = 0;
     BYTE auto_ttl_max = 0;
     uint32_t dnsv4_addr = 0;
-    struct in6_addr dnsv6_addr = {0};
-    struct in6_addr dns_temp_addr = {0};
+    struct in6_addr dnsv6_addr = { 0 };
+    struct in6_addr dns_temp_addr = { 0 };
     uint16_t dnsv4_port = htons(53);
     uint16_t dnsv6_port = htons(53);
-
-    // Make sure to search DLLs only in safe path, not in current working dir.
-    SetDllDirectory("");
-    SetSearchPathMode(BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE | BASE_SEARCH_PATH_PERMANENT);
-
-    if (!running_from_service) {
-        running_from_service = 1;
-        if (service_register(argc, argv)) {
-            /* We've been called as a service. Register service
-             * and exit this thread. main() would be called from
-             * service.c next time.
-             *
-             * Note that if service_register() succeedes it does
-             * not return until the service is stopped.
-             * That is why we should set running_from_service
-             * before calling service_register and unset it
-             * afterwards.
-             */
-            return 0;
-        }
-        running_from_service = 0;
-    }
-
-    if (filter_string == NULL)
-        filter_string = strdup(FILTER_STRING_TEMPLATE);
-    if (filter_passive_string == NULL)
-        filter_passive_string = strdup(FILTER_PASSIVE_STRING_TEMPLATE);
-    if (filter_forward_string == NULL)
-        filter_forward_string = strdup(FORWARD_FILTER_STRING_TEMPLATE);
-    if (filter_passive_forward_string == NULL)
-        filter_passive_forward_string = strdup(FILTER_PASSIVE_FORWARD_STRING_TEMPLATE);
-
-    if (get_subnet())
-        return -1;
-
-    replace_template_and_clear_strings(&filter_forward_string, SUBNET_START_TEMPLATE, subnet_start);
-    replace_template_and_clear_strings(&filter_forward_string, SUBNET_END_TEMPLATE, subnet_end);
-
-    replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_START_TEMPLATE, subnet_start);
-    replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_END_TEMPLATE, subnet_end);
-
-    printf(
-        "GoodbyeDPI " GOODBYEDPI_VERSION
-        ": Passive DPI blocker and Active DPI circumvention utility\n"
-        "https://github.com/ValdikSS/GoodbyeDPI\n\n"
-    );
 
     if (argc == 1) {
         /* enable mode -5 by default */
@@ -1266,243 +1269,243 @@ int main(int argc, char *argv[])
 
     while ((opt = getopt_long(argc, argv, "123456prsaf:e:mwk:n", long_options, NULL)) != -1) {
         switch (opt) {
-            case '1':
-                do_passivedpi = do_host = do_host_removespace \
+        case '1':
+            do_passivedpi = do_host = do_host_removespace \
                 = do_fragment_http = do_fragment_https \
                 = do_fragment_http_persistent \
                 = do_fragment_http_persistent_nowait = 1;
-                break;
-            case '2':
-                do_passivedpi = do_host = do_host_removespace \
+            break;
+        case '2':
+            do_passivedpi = do_host = do_host_removespace \
                 = do_fragment_http = do_fragment_https \
                 = do_fragment_http_persistent \
                 = do_fragment_http_persistent_nowait = 1;
-                https_fragment_size = 40u;
-                break;
-            case '3':
-                do_passivedpi = do_host = do_host_removespace \
+            https_fragment_size = 40u;
+            break;
+        case '3':
+            do_passivedpi = do_host = do_host_removespace \
                 = do_fragment_https = 1;
-                https_fragment_size = 40u;
-                break;
-            case '4':
-                do_passivedpi = do_host = do_host_removespace = 1;
-                break;
-            case '5':
-                do_fragment_http = do_fragment_https = 1;
-                do_reverse_frag = do_native_frag = 1;
-                http_fragment_size = https_fragment_size = 2;
-                do_fragment_http_persistent = do_fragment_http_persistent_nowait = 1;
-                do_fake_packet = 1;
-                do_auto_ttl = 1;
-                max_payload_size = 1200;
-                break;
-            case '6':
-                do_fragment_http = do_fragment_https = 1;
-                do_reverse_frag = do_native_frag = 1;
-                http_fragment_size = https_fragment_size = 2;
-                do_fragment_http_persistent = do_fragment_http_persistent_nowait = 1;
-                do_fake_packet = 1;
-                do_wrong_seq = 1;
-                max_payload_size = 1200;
-                break;
-            case 'p':
-                do_passivedpi = 1;
-                break;
-            case 'r':
-                do_host = 1;
-                break;
-            case 's':
-                do_host_removespace = 1;
-                break;
-            case 'a':
-                do_additional_space = 1;
-                do_host_removespace = 1;
-                break;
-            case 'm':
-                do_host_mixedcase = 1;
-                break;
-            case 'f':
-                do_fragment_http = 1;
-                SET_HTTP_FRAGMENT_SIZE_OPTION(atousi(optarg, "Fragment size should be in range [0 - 0xFFFF]\n"));
-                break;
-            case 'k':
-                do_fragment_http_persistent = 1;
-                do_native_frag = 1;
-                SET_HTTP_FRAGMENT_SIZE_OPTION(atousi(optarg, "Fragment size should be in range [0 - 0xFFFF]\n"));
-                break;
-            case 'n':
-                do_fragment_http_persistent = 1;
-                do_fragment_http_persistent_nowait = 1;
-                do_native_frag = 1;
-                break;
-            case 'e':
-                do_fragment_https = 1;
-                https_fragment_size = atousi(optarg, "Fragment size should be in range [0 - 65535]\n");
-                break;
-            case 'w':
-                do_http_allports = 1;
-                break;
-            case 'z': // --port
-                /* i is used as a temporary variable here */
-                i = atoi(optarg);
-                if (i <= 0 || i > 65535) {
-                    printf("Port parameter error!\n");
+            https_fragment_size = 40u;
+            break;
+        case '4':
+            do_passivedpi = do_host = do_host_removespace = 1;
+            break;
+        case '5':
+            do_fragment_http = do_fragment_https = 1;
+            do_reverse_frag = do_native_frag = 1;
+            http_fragment_size = https_fragment_size = 2;
+            do_fragment_http_persistent = do_fragment_http_persistent_nowait = 1;
+            do_fake_packet = 1;
+            do_auto_ttl = 1;
+            max_payload_size = 1200;
+            break;
+        case '6':
+            do_fragment_http = do_fragment_https = 1;
+            do_reverse_frag = do_native_frag = 1;
+            http_fragment_size = https_fragment_size = 2;
+            do_fragment_http_persistent = do_fragment_http_persistent_nowait = 1;
+            do_fake_packet = 1;
+            do_wrong_seq = 1;
+            max_payload_size = 1200;
+            break;
+        case 'p':
+            do_passivedpi = 1;
+            break;
+        case 'r':
+            do_host = 1;
+            break;
+        case 's':
+            do_host_removespace = 1;
+            break;
+        case 'a':
+            do_additional_space = 1;
+            do_host_removespace = 1;
+            break;
+        case 'm':
+            do_host_mixedcase = 1;
+            break;
+        case 'f':
+            do_fragment_http = 1;
+            SET_HTTP_FRAGMENT_SIZE_OPTION(atousi(optarg, "Fragment size should be in range [0 - 0xFFFF]\n"));
+            break;
+        case 'k':
+            do_fragment_http_persistent = 1;
+            do_native_frag = 1;
+            SET_HTTP_FRAGMENT_SIZE_OPTION(atousi(optarg, "Fragment size should be in range [0 - 0xFFFF]\n"));
+            break;
+        case 'n':
+            do_fragment_http_persistent = 1;
+            do_fragment_http_persistent_nowait = 1;
+            do_native_frag = 1;
+            break;
+        case 'e':
+            do_fragment_https = 1;
+            https_fragment_size = atousi(optarg, "Fragment size should be in range [0 - 65535]\n");
+            break;
+        case 'w':
+            do_http_allports = 1;
+            break;
+        case 'z': // --port
+            /* i is used as a temporary variable here */
+            i = atoi(optarg);
+            if (i <= 0 || i > 65535) {
+                printf("Port parameter error!\n");
+                exit(EXIT_FAILURE);
+            }
+            if (i != 80 && i != 443)
+                add_filter_str(IPPROTO_TCP, i);
+            i = 0;
+            break;
+        case 'i': // --ip-id
+            /* i is used as a temporary variable here */
+            i = atousi(optarg, "IP ID parameter error!\n");
+            add_ip_id_str(i);
+            i = 0;
+            break;
+        case 'd': // --dns-addr
+            if ((inet_pton(AF_INET, optarg, dns_temp_addr.s6_addr) == 1) &&
+                !do_dnsv4_redirect)
+            {
+                do_dnsv4_redirect = 1;
+                if (inet_pton(AF_INET, optarg, &dnsv4_addr) != 1) {
+                    puts("DNS address parameter error!");
                     exit(EXIT_FAILURE);
                 }
-                if (i != 80 && i != 443)
-                    add_filter_str(IPPROTO_TCP, i);
-                i = 0;
+                add_filter_str(IPPROTO_UDP, 53);
+                flush_dns_cache();
                 break;
-            case 'i': // --ip-id
-                /* i is used as a temporary variable here */
-                i = atousi(optarg, "IP ID parameter error!\n");
-                add_ip_id_str(i);
-                i = 0;
+            }
+            puts("DNS address parameter error!");
+            exit(EXIT_FAILURE);
+            break;
+        case '!': // --dnsv6-addr
+            if ((inet_pton(AF_INET6, optarg, dns_temp_addr.s6_addr) == 1) &&
+                !do_dnsv6_redirect)
+            {
+                do_dnsv6_redirect = 1;
+                if (inet_pton(AF_INET6, optarg, dnsv6_addr.s6_addr) != 1) {
+                    puts("DNS address parameter error!");
+                    exit(EXIT_FAILURE);
+                }
+                add_filter_str(IPPROTO_UDP, 53);
+                flush_dns_cache();
                 break;
-            case 'd': // --dns-addr
-                if ((inet_pton(AF_INET, optarg, dns_temp_addr.s6_addr) == 1) &&
-                    !do_dnsv4_redirect)
-                {
-                    do_dnsv4_redirect = 1;
-                    if (inet_pton(AF_INET, optarg, &dnsv4_addr) != 1) {
-                        puts("DNS address parameter error!");
+            }
+            puts("DNS address parameter error!");
+            exit(EXIT_FAILURE);
+            break;
+        case 'g': // --dns-port
+            if (!do_dnsv4_redirect) {
+                puts("--dns-port should be used with --dns-addr!\n"
+                    "Make sure you use --dns-addr and pass it before "
+                    "--dns-port");
+                exit(EXIT_FAILURE);
+            }
+            dnsv4_port = atousi(optarg, "DNS port parameter error!");
+            if (dnsv4_port != 53) {
+                add_filter_str(IPPROTO_UDP, dnsv4_port);
+            }
+            dnsv4_port = htons(dnsv4_port);
+            break;
+        case '@': // --dnsv6-port
+            if (!do_dnsv6_redirect) {
+                puts("--dnsv6-port should be used with --dnsv6-addr!\n"
+                    "Make sure you use --dnsv6-addr and pass it before "
+                    "--dnsv6-port");
+                exit(EXIT_FAILURE);
+            }
+            dnsv6_port = atousi(optarg, "DNS port parameter error!");
+            if (dnsv6_port != 53) {
+                add_filter_str(IPPROTO_UDP, dnsv6_port);
+            }
+            dnsv6_port = htons(dnsv6_port);
+            break;
+        case 'v':
+            do_dns_verb = 1;
+            do_tcp_verb = 1;
+            break;
+        case 'b': // --blacklist
+            do_blacklist = 1;
+            if (!blackwhitelist_load_list(optarg)) {
+                printf("Can't load blacklist from file!\n");
+                exit(EXIT_FAILURE);
+            }
+            break;
+        case ']': // --allow-no-sni
+            do_allow_no_sni = 1;
+            break;
+        case '$': // --set-ttl
+            do_auto_ttl = auto_ttl_1 = auto_ttl_2 = auto_ttl_max = 0;
+            do_fake_packet = 1;
+            ttl_of_fake_packet = atoub(optarg, "Set TTL parameter error!");
+            break;
+        case '[': // --min-ttl
+            do_fake_packet = 1;
+            ttl_min_nhops = atoub(optarg, "Set Minimum TTL number of hops parameter error!");
+            break;
+        case '+': // --auto-ttl
+            do_fake_packet = 1;
+            do_auto_ttl = 1;
+
+            if (!optarg && argv[optind] && argv[optind][0] != '-')
+                optarg = argv[optind];
+
+            if (optarg) {
+                char* autottl_copy = strdup(optarg);
+                if (strchr(autottl_copy, '-')) {
+                    // token "-" found, start X-Y parser
+                    char* autottl_current = strtok(autottl_copy, "-");
+                    auto_ttl_1 = atoub(autottl_current, "Set Auto TTL parameter error!");
+                    autottl_current = strtok(NULL, "-");
+                    if (!autottl_current) {
+                        puts("Set Auto TTL parameter error!");
                         exit(EXIT_FAILURE);
                     }
-                    add_filter_str(IPPROTO_UDP, 53);
-                    flush_dns_cache();
-                    break;
-                }
-                puts("DNS address parameter error!");
-                exit(EXIT_FAILURE);
-                break;
-            case '!': // --dnsv6-addr
-                if ((inet_pton(AF_INET6, optarg, dns_temp_addr.s6_addr) == 1) &&
-                    !do_dnsv6_redirect)
-                {
-                    do_dnsv6_redirect = 1;
-                    if (inet_pton(AF_INET6, optarg, dnsv6_addr.s6_addr) != 1) {
-                        puts("DNS address parameter error!");
+                    auto_ttl_2 = atoub(autottl_current, "Set Auto TTL parameter error!");
+                    autottl_current = strtok(NULL, "-");
+                    if (!autottl_current) {
+                        puts("Set Auto TTL parameter error!");
                         exit(EXIT_FAILURE);
                     }
-                    add_filter_str(IPPROTO_UDP, 53);
-                    flush_dns_cache();
-                    break;
+                    auto_ttl_max = atoub(autottl_current, "Set Auto TTL parameter error!");
                 }
-                puts("DNS address parameter error!");
-                exit(EXIT_FAILURE);
-                break;
-            case 'g': // --dns-port
-                if (!do_dnsv4_redirect) {
-                    puts("--dns-port should be used with --dns-addr!\n"
-                        "Make sure you use --dns-addr and pass it before "
-                        "--dns-port");
-                    exit(EXIT_FAILURE);
+                else {
+                    // single digit parser
+                    auto_ttl_2 = atoub(optarg, "Set Auto TTL parameter error!");
+                    auto_ttl_1 = auto_ttl_2;
                 }
-                dnsv4_port = atousi(optarg, "DNS port parameter error!");
-                if (dnsv4_port != 53) {
-                    add_filter_str(IPPROTO_UDP, dnsv4_port);
-                }
-                dnsv4_port = htons(dnsv4_port);
-                break;
-            case '@': // --dnsv6-port
-                if (!do_dnsv6_redirect) {
-                    puts("--dnsv6-port should be used with --dnsv6-addr!\n"
-                        "Make sure you use --dnsv6-addr and pass it before "
-                        "--dnsv6-port");
-                    exit(EXIT_FAILURE);
-                }
-                dnsv6_port = atousi(optarg, "DNS port parameter error!");
-                if (dnsv6_port != 53) {
-                    add_filter_str(IPPROTO_UDP, dnsv6_port);
-                }
-                dnsv6_port = htons(dnsv6_port);
-                break;
-            case 'v':
-                do_dns_verb = 1;
-                do_tcp_verb = 1;
-                break;
-            case 'b': // --blacklist
-                do_blacklist = 1;
-                if (!blackwhitelist_load_list(optarg)) {
-                    printf("Can't load blacklist from file!\n");
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            case ']': // --allow-no-sni
-                do_allow_no_sni = 1;
-                break;
-            case '$': // --set-ttl
-                do_auto_ttl = auto_ttl_1 = auto_ttl_2 = auto_ttl_max = 0;
-                do_fake_packet = 1;
-                ttl_of_fake_packet = atoub(optarg, "Set TTL parameter error!");
-                break;
-            case '[': // --min-ttl
-                do_fake_packet = 1;
-                ttl_min_nhops = atoub(optarg, "Set Minimum TTL number of hops parameter error!");
-                break;
-            case '+': // --auto-ttl
-                do_fake_packet = 1;
-                do_auto_ttl = 1;
-
-                if (!optarg && argv[optind] && argv[optind][0] != '-')
-                    optarg = argv[optind];
-
-                if (optarg) {
-                    char *autottl_copy = strdup(optarg);
-                    if (strchr(autottl_copy, '-')) {
-                        // token "-" found, start X-Y parser
-                        char *autottl_current = strtok(autottl_copy, "-");
-                        auto_ttl_1 = atoub(autottl_current, "Set Auto TTL parameter error!");
-                        autottl_current = strtok(NULL, "-");
-                        if (!autottl_current) {
-                            puts("Set Auto TTL parameter error!");
-                            exit(EXIT_FAILURE);
-                        }
-                        auto_ttl_2 = atoub(autottl_current, "Set Auto TTL parameter error!");
-                        autottl_current = strtok(NULL, "-");
-                        if (!autottl_current) {
-                            puts("Set Auto TTL parameter error!");
-                            exit(EXIT_FAILURE);
-                        }
-                        auto_ttl_max = atoub(autottl_current, "Set Auto TTL parameter error!");
-                    }
-                    else {
-                        // single digit parser
-                        auto_ttl_2 = atoub(optarg, "Set Auto TTL parameter error!");
-                        auto_ttl_1 = auto_ttl_2;
-                    }
-                    free(autottl_copy);
-                }
-                break;
-            case '%': // --wrong-chksum
-                do_fake_packet = 1;
-                do_wrong_chksum = 1;
-                break;
-            case ')': // --wrong-seq
-                do_fake_packet = 1;
-                do_wrong_seq = 1;
-                break;
-            case '*': // --native-frag
-                do_native_frag = 1;
-                do_fragment_http_persistent = 1;
-                do_fragment_http_persistent_nowait = 1;
-                break;
-            case '(': // --reverse-frag
-                do_reverse_frag = 1;
-                do_native_frag = 1;
-                do_fragment_http_persistent = 1;
-                do_fragment_http_persistent_nowait = 1;
-                break;
-            case '|': // --max-payload
-                if (!optarg && argv[optind] && argv[optind][0] != '-')
-                    optarg = argv[optind];
-                if (optarg)
-                    max_payload_size = atousi(optarg, "Max payload size parameter error!");
-                else
-                    max_payload_size = 1200;
-                break;
-            default:
-                puts("Usage: goodbyedpi.exe [OPTION...]\n"
+                free(autottl_copy);
+            }
+            break;
+        case '%': // --wrong-chksum
+            do_fake_packet = 1;
+            do_wrong_chksum = 1;
+            break;
+        case ')': // --wrong-seq
+            do_fake_packet = 1;
+            do_wrong_seq = 1;
+            break;
+        case '*': // --native-frag
+            do_native_frag = 1;
+            do_fragment_http_persistent = 1;
+            do_fragment_http_persistent_nowait = 1;
+            break;
+        case '(': // --reverse-frag
+            do_reverse_frag = 1;
+            do_native_frag = 1;
+            do_fragment_http_persistent = 1;
+            do_fragment_http_persistent_nowait = 1;
+            break;
+        case '|': // --max-payload
+            if (!optarg && argv[optind] && argv[optind][0] != '-')
+                optarg = argv[optind];
+            if (optarg)
+                max_payload_size = atousi(optarg, "Max payload size parameter error!");
+            else
+                max_payload_size = 1200;
+            break;
+        default:
+            puts("Usage: goodbyedpi.exe [OPTION...]\n"
                 " -p          block passive DPI\n"
                 " -r          replace Host with hoSt\n"
                 " -s          remove space between host header and its value\n"
@@ -1550,7 +1553,7 @@ int main(int argc, char *argv[])
                 "                          May skip some huge HTTP requests from being processed.\n"
                 "                          Default (if set): --max-payload 1200.\n"
                 "\n");
-                puts("LEGACY modesets:\n"
+            puts("LEGACY modesets:\n"
                 " -1          -p -r -s -f 2 -k 2 -n -e 2 (most compatible mode)\n"
                 " -2          -p -r -s -f 2 -k 2 -n -e 40 (better speed for HTTPS yet still compatible)\n"
                 " -3          -p -r -s -e 40 (better speed for HTTP and HTTPS)\n"
@@ -1559,7 +1562,7 @@ int main(int argc, char *argv[])
                 "Modern modesets (more stable, more compatible, faster):\n"
                 " -5          -f 2 -e 2 --auto-ttl --reverse-frag --max-payload (this is the default)\n"
                 " -6          -f 2 -e 2 --wrong-seq --reverse-frag --max-payload\n");
-                exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -1579,56 +1582,56 @@ int main(int argc, char *argv[])
     }
 
     printf("Block passive: %d\n"                    /* 1 */
-           "Fragment HTTP: %u\n"                    /* 2 */
-           "Fragment persistent HTTP: %u\n"         /* 3 */
-           "Fragment HTTPS: %u\n"                   /* 4 */
-           "Native fragmentation (splitting): %d\n" /* 5 */
-           "Fragments sending in reverse: %d\n"     /* 6 */
-           "hoSt: %d\n"                             /* 7 */
-           "Host no space: %d\n"                    /* 8 */
-           "Additional space: %d\n"                 /* 9 */
-           "Mix Host: %d\n"                         /* 10 */
-           "HTTP AllPorts: %d\n"                    /* 11 */
-           "HTTP Persistent Nowait: %d\n"           /* 12 */
-           "DNS redirect: %d\n"                     /* 13 */
-           "DNSv6 redirect: %d\n"                   /* 14 */
-           "Allow missing SNI: %d\n"                /* 15 */
-           "Fake requests, TTL: %s (fixed: %hu, auto: %hu-%hu-%hu, min distance: %hu)\n"  /* 16 */
-           "Fake requests, wrong checksum: %d\n"    /* 17 */
-           "Fake requests, wrong SEQ/ACK: %d\n"     /* 18 */
-           "Max payload size: %hu\n",               /* 19 */
-           do_passivedpi,                                         /* 1 */
-           (do_fragment_http ? http_fragment_size : 0),           /* 2 */
-           (do_fragment_http_persistent ? http_fragment_size : 0),/* 3 */
-           (do_fragment_https ? https_fragment_size : 0),         /* 4 */
-           do_native_frag,        /* 5 */
-           do_reverse_frag,       /* 6 */
-           do_host,               /* 7 */
-           do_host_removespace,   /* 8 */
-           do_additional_space,   /* 9 */
-           do_host_mixedcase,     /* 10 */
-           do_http_allports,      /* 11 */
-           do_fragment_http_persistent_nowait, /* 12 */
-           do_dnsv4_redirect,                  /* 13 */
-           do_dnsv6_redirect,                  /* 14 */
-           do_allow_no_sni,                    /* 15 */
-           do_auto_ttl ? "auto" : (do_fake_packet ? "fixed" : "disabled"),  /* 16 */
-               ttl_of_fake_packet, do_auto_ttl ? auto_ttl_1 : 0, do_auto_ttl ? auto_ttl_2 : 0,
-               do_auto_ttl ? auto_ttl_max : 0, ttl_min_nhops,
-           do_wrong_chksum, /* 17 */
-           do_wrong_seq,    /* 18 */
-           max_payload_size /* 19 */
-          );
+        "Fragment HTTP: %u\n"                    /* 2 */
+        "Fragment persistent HTTP: %u\n"         /* 3 */
+        "Fragment HTTPS: %u\n"                   /* 4 */
+        "Native fragmentation (splitting): %d\n" /* 5 */
+        "Fragments sending in reverse: %d\n"     /* 6 */
+        "hoSt: %d\n"                             /* 7 */
+        "Host no space: %d\n"                    /* 8 */
+        "Additional space: %d\n"                 /* 9 */
+        "Mix Host: %d\n"                         /* 10 */
+        "HTTP AllPorts: %d\n"                    /* 11 */
+        "HTTP Persistent Nowait: %d\n"           /* 12 */
+        "DNS redirect: %d\n"                     /* 13 */
+        "DNSv6 redirect: %d\n"                   /* 14 */
+        "Allow missing SNI: %d\n"                /* 15 */
+        "Fake requests, TTL: %s (fixed: %hu, auto: %hu-%hu-%hu, min distance: %hu)\n"  /* 16 */
+        "Fake requests, wrong checksum: %d\n"    /* 17 */
+        "Fake requests, wrong SEQ/ACK: %d\n"     /* 18 */
+        "Max payload size: %hu\n",               /* 19 */
+        do_passivedpi,                                         /* 1 */
+        (do_fragment_http ? http_fragment_size : 0),           /* 2 */
+        (do_fragment_http_persistent ? http_fragment_size : 0),/* 3 */
+        (do_fragment_https ? https_fragment_size : 0),         /* 4 */
+        do_native_frag,        /* 5 */
+        do_reverse_frag,       /* 6 */
+        do_host,               /* 7 */
+        do_host_removespace,   /* 8 */
+        do_additional_space,   /* 9 */
+        do_host_mixedcase,     /* 10 */
+        do_http_allports,      /* 11 */
+        do_fragment_http_persistent_nowait, /* 12 */
+        do_dnsv4_redirect,                  /* 13 */
+        do_dnsv6_redirect,                  /* 14 */
+        do_allow_no_sni,                    /* 15 */
+        do_auto_ttl ? "auto" : (do_fake_packet ? "fixed" : "disabled"),  /* 16 */
+        ttl_of_fake_packet, do_auto_ttl ? auto_ttl_1 : 0, do_auto_ttl ? auto_ttl_2 : 0,
+        do_auto_ttl ? auto_ttl_max : 0, ttl_min_nhops,
+        do_wrong_chksum, /* 17 */
+        do_wrong_seq,    /* 18 */
+        max_payload_size /* 19 */
+    );
 
     if (do_fragment_http && http_fragment_size > 2 && !do_native_frag) {
         puts("\nWARNING: HTTP fragmentation values > 2 are not fully compatible "
-             "with other options. Please use values <= 2 or disable HTTP fragmentation "
-             "completely.");
+            "with other options. Please use values <= 2 or disable HTTP fragmentation "
+            "completely.");
     }
 
     if (do_native_frag && !(do_fragment_http || do_fragment_https)) {
         puts("\nERROR: Native fragmentation is enabled but fragment sizes are not set.\n"
-             "Fragmentation has no effect.");
+            "Fragmentation has no effect.");
         die();
     }
 
@@ -1657,16 +1660,10 @@ int main(int argc, char *argv[])
         ++filter_num;
     }
 
-    /* 
+    /*
      * IPv4 & IPv6 filter for inbound HTTP redirection packets and
      * active DPI circumvention
      */
-    /*
-    filters[filter_num] = init(filter_string, 0, 0);
-
-    w_filter = filters[filter_num];
-    ++filter_num;
-    */
 
     filters[filter_num] = init(filter_string, 0, 0);
 
@@ -1694,14 +1691,14 @@ int main(int argc, char *argv[])
         auto_ttl_1, auto_ttl_2, auto_ttl_max, do_wrong_chksum, do_wrong_seq, do_reverse_frag
     };
 
-    PARGS pStraightArguments = (PARGS) malloc(sizeof(ARGS)), pForwardArguments = (PARGS)malloc(sizeof(ARGS));
+    PARGS pStraightArguments = (PARGS)malloc(sizeof(ARGS)), pForwardArguments = (PARGS)malloc(sizeof(ARGS));
     pStraightArguments->consts = consts;
     pStraightArguments->filter = w_filter;
     pForwardArguments->consts = consts;
     pForwardArguments->filter = w_forward_filter;
-    
+
     DWORD dwStraightThreadId, dwForwardThreadId;
-    HANDLE hThreadArray[2] = { 
+    HANDLE hThreadArray[2] = {
         CreateThread(NULL, 0, WinDivertRecvStraight, pStraightArguments, 0, &dwStraightThreadId),
         CreateThread(NULL, 0, WinDivertRecvForward, pForwardArguments, 0, &dwForwardThreadId)
     };
@@ -1711,4 +1708,76 @@ int main(int argc, char *argv[])
     CloseHandle(hThreadArray[1]);
     free(pStraightArguments);
     free(pForwardArguments);
+
+}
+
+int main(int argc, char *argv[])
+{
+    // Make sure to search DLLs only in safe path, not in current working dir.
+    SetDllDirectory("");
+    SetSearchPathMode(BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE | BASE_SEARCH_PATH_PERMANENT);
+
+    if (!running_from_service) {
+        running_from_service = 1;
+        if (service_register(argc, argv)) {
+            /* We've been called as a service. Register service
+             * and exit this thread. main() would be called from
+             * service.c next time.
+             *
+             * Note that if service_register() succeedes it does
+             * not return until the service is stopped.
+             * That is why we should set running_from_service
+             * before calling service_register and unset it
+             * afterwards.
+             */
+            return 0;
+        }
+        running_from_service = 0;
+    }
+
+    if (filter_string == NULL)
+        filter_string = strdup(FILTER_STRING_TEMPLATE);
+    if (filter_passive_string == NULL)
+        filter_passive_string = strdup(FILTER_PASSIVE_STRING_TEMPLATE);
+    if (filter_forward_string == NULL)
+        filter_forward_string = strdup(FORWARD_FILTER_STRING_TEMPLATE);
+    if (filter_passive_forward_string == NULL)
+        filter_passive_forward_string = strdup(FILTER_PASSIVE_FORWARD_STRING_TEMPLATE);
+
+    if (get_subnet())
+        return -1;
+
+    replace_template_and_clear_strings(&filter_forward_string, SUBNET_START_TEMPLATE, subnet_start);
+    replace_template_and_clear_strings(&filter_forward_string, SUBNET_END_TEMPLATE, subnet_end);
+
+    replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_START_TEMPLATE, subnet_start);
+    replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_END_TEMPLATE, subnet_end);
+
+    printf(
+        "GoodbyeDPI " GOODBYEDPI_VERSION
+        ": Passive DPI blocker and Active DPI circumvention utility\n"
+        "https://github.com/ValdikSS/GoodbyeDPI\n\n"
+    );
+
+    const int modes_size = 5;
+    const char modes[modes_size] = { "", "" };
+    char** actual_mode = (char*)malloc(sizeof(char*) * argc);
+    int mode_number = argc;
+    receivingPacketMutex = CreateMutex(NULL, FALSE, NULL);
+    if (ghMutex == NULL)
+    {
+        debug("CreateMutex error: %d\n", GetLastError());
+        return 1;
+    }
+
+    do
+    {
+        for (int i = 0; i < BUFFER_SIZE; ++i)
+            bufferDestIP[i] = 0;
+
+        TurnOnOrReloadGDPI(modes, modes_size, argc, actual_mode);
+        ClearModes(&actual_mode);
+        ChangeModes(&argc, &actual_mode);
+    }
+    while (TRUE);
 }
