@@ -21,6 +21,7 @@
 #include "ttltrack.h"
 #include "blackwhitelist.h"
 #include "fakepackets.h"
+#include "ip_list.h"
 
 // My mingw installation does not load inet_pton definition for some reason
 WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pAddr);
@@ -29,7 +30,7 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
 
 #define die() do { sleep(20); exit(EXIT_FAILURE); } while (FALSE)
 
-#define MAX_FILTERS 4
+#define MAX_FILTERS 6
 
 /*
 #define DIVERT_NO_LOCALNETSv4_DST "(" \
@@ -97,6 +98,22 @@ WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pA
         "(ip.SrcAddr < " SUBNET_START_TEMPLATE " or ip.SrcAddr > " SUBNET_END_TEMPLATE ")"
 #define FORWARD_OUTBOUND "(ip.SrcAddr >= 192.168.1.1) and (ip.SrcAddr < 192.168.1.255) and " \
         "(ip.DstAddr < " SUBNET_START_TEMPLATE " or ip.DstAddr > " SUBNET_END_TEMPLATE ")"
+
+#define ALL_PUBLIC_IP_STRING_TEMPLATE(ipTempl) "((" ipTempl " > 1.0.0.0 and " ipTempl " < 9.255.255.255) or " \
+        "(" ipTempl " > 11.0.0.0 and " ipTempl " < 100.63.255.255) or " \
+        "(" ipTempl " > 100.128.0.0 and " ipTempl " < 126.255.255.255) or " \
+        "(" ipTempl " > 128.0.0.0 and " ipTempl " < 169.253.255.255) or " \
+        "(" ipTempl " > 169.255.0.0 and " ipTempl " < 172.15.255.255) or " \
+        "(" ipTempl " > 172.32.0.0 and " ipTempl " < 191.255.255.255) or " \
+        "(" ipTempl " > 192.0.1.0 and " ipTempl " < 192.0.1.255) or " \
+        "(" ipTempl " > 192.0.3.0 and " ipTempl " < 192.88.98.255) or " \
+        "(" ipTempl " > 192.88.100.0 and " ipTempl " < 192.167.255.255) or " \
+        "(" ipTempl " > 192.169.0.0 and " ipTempl " < 198.17.255.255) or " \
+        "(" ipTempl " > 198.20.0.0 and " ipTempl " < 198.51.99.255) or " \
+        "(" ipTempl " > 198.51.101.0 and " ipTempl " < 203.0.112.255) or " \
+        "(" ipTempl " > 198.51.101.0 and " ipTempl " < 203.0.112.255))"
+
+#define ALL_PACKETS_FILTER_STRING_TEMPLATE "(" ALL_PUBLIC_IP_STRING_TEMPLATE("ip.DstAddr") ") or (" ALL_PUBLIC_IP_STRING_TEMPLATE("ip.SrcAddr") ")"
 
 //#define FORWARD_INBOUND "(ip.DstAddr >= 192.168.1.1) and (ip.DstAddr < 192.168.254.255) or " \
 //        "(ip.SrcAddr >= 192.168.1.1 and ip.SrcAddr < 192.168.254.255)"
@@ -240,8 +257,11 @@ static char *filter_string = NULL;
 static char *filter_passive_string = NULL;
 static char *filter_forward_string = NULL;
 static char *filter_passive_forward_string = NULL;
+static char* all_packets_filter_string = NULL;
 static char *subnet_start = NULL;
 static char *subnet_end = NULL;
+
+static LimitedIpList GlobalIpList = { 6, 0, NULL };
 
 static void change_filter(char** string, int proto, int port, const char* udp, const char* tcp) {
     char* current_filter = *string;
@@ -357,11 +377,11 @@ BYTE atoub(const char *str, const char *msg) {
 }
 
 
-static HANDLE init(char *filter, UINT64 flags, int is_forward) {
+static HANDLE init(char *filter, UINT64 flags, int isForward, INT16 priority) {
     LPTSTR errormessage = NULL;
     DWORD errorcode = 0;
     debug("%s\n", filter);
-    filter = WinDivertOpen(filter, is_forward ? WINDIVERT_LAYER_NETWORK_FORWARD : WINDIVERT_LAYER_NETWORK, 0, flags);
+    filter = WinDivertOpen(filter, isForward ? WINDIVERT_LAYER_NETWORK_FORWARD : WINDIVERT_LAYER_NETWORK, priority, flags);
     if (filter != INVALID_HANDLE_VALUE)
         return filter;
     errorcode = GetLastError();
@@ -397,6 +417,7 @@ void deinit_all() {
     for (int i = 0; i < filter_num; i++) {
         deinit(filters[i]);
     }
+    filter_num = 0;
 }
 
 static void sigint_handler(int sig __attribute__((unused))) {
@@ -673,37 +694,11 @@ typedef struct {
     int do_wrong_chksum, do_wrong_seq, do_reverse_frag;
 } IntConsts;
 
-const size_t BUFFER_SIZE = 5;
-static uint32_t bufferDestIP[BUFFER_SIZE];
-
-size_t FindInsertPlace()
-{
-
-}
-
-void Insert(uint32_t ip, size_t index)
-{
-    if (index > BUFFER_SIZE)
-    {
-        if (!isFull())
-            bufferDestIP[itemCount++] = ip;
-        return;
-    }
-    bufferDestIP[index] = ip;
-}
-
-size_t Find(uint32_t ip)
-{
-    for (size_t index = 0; index < itemCount; ++index)
-        if (ip == bufferDestIP[index])
-            return index;
-    return INT_MAX;
-}
-
 int AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_ADDRESS addr,
-    IntConsts consts, int is_forward) {
+    IntConsts consts, int is_forward)
+{
     int sni_ok = 0, should_reinject = 1, should_recalc_checksum = 0,
-        http_req_fragmented, packet_v4 = 0, packet_v6 = 0, packet_is_not_found = FALSE;
+        http_req_fragmented, packet_v4 = 0, packet_v6 = 0;
 
     PWINDIVERT_IPHDR ppIpHdr = (PWINDIVERT_IPHDR)NULL;
     PWINDIVERT_IPV6HDR ppIpV6Hdr = (PWINDIVERT_IPV6HDR)NULL;
@@ -765,9 +760,10 @@ int AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_
         //from_big_endian_to_little_endian(inet_addr(subnet_start)),
         //from_big_endian_to_little_endian(inet_addr(subnet_end)));
     debug("packet_type: %d, packet_v4: %d, packet_v6: %d\n", packet_type, packet_v4, packet_v6);
+
     if (packet_v6 && is_forward) {
         debug("packet wasn\'t analyzed\n");
-        return packet_is_not_found;
+        return;
     }
 
     if (packet_type == ipv4_tcp_data || packet_type == ipv6_tcp_data) {
@@ -1005,8 +1001,6 @@ int AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_
                     packet_dataLen, packet_v4, packet_v6,
                     ppIpHdr, ppIpV6Hdr, ppTcpHdr,
                     current_fragment_size, !consts.do_reverse_frag);
-
-                return packet_is_not_found;
             }
         }
     } /* Handle TCP packet with data */
@@ -1146,8 +1140,6 @@ int AnalyzePacket(HANDLE w_filter, char packet[9016], UINT packetLen, WINDIVERT_
         }
         WinDivertSend(w_filter, packet, packetLen, NULL, &addr);
     }
-
-    return packet_is_not_found;
 }
 
 typedef struct ThreadFunctionArguments {
@@ -1155,76 +1147,125 @@ typedef struct ThreadFunctionArguments {
     IntConsts consts;
 } ARGS, * PARGS;
 
-static int global_packet_is_not_found = FALSE;
-HANDLE receivingPacketMutex;
+int AddOrFindNewPacket(char* packet, UINT packetLen, WINDIVERT_ADDRESS addr, int isForward)
+{
+    PWINDIVERT_IPHDR ppIpHdr = (PWINDIVERT_IPHDR)NULL;
+    WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    // handling ip
+    if (IsOutbound(isForward, ppIpHdr->SrcAddr, addr))
+    {
+        return Insert(ppIpHdr->DstAddr);
+    }
+    else
+    {
+        size_t index = Find(ppIpHdr->SrcAddr);
+        if (index != GlobalIpList.m_ipLimit)
+        {
+            for (Erase(index);
+                index != GlobalIpList.m_ipLimit;
+                Erase(index))
+                index = Find(ppIpHdr->SrcAddr);
+        }
+        else
+        {
+            char srcAddr[INET_ADDRSTRLEN];
+            if (!inet_ntop(AF_INET, &(ppIpHdr->SrcAddr), srcAddr, sizeof(srcAddr)))
+                debug("Didn't return char src");
+            debug("Packet with unknown SrcIp: %s\n", srcAddr);
+        }
+        return FALSE;
+    }
+}
 
-DWORD WinDivertRecvStraight(LPVOID args)
+void WinDivertRecvHandling(int isForward, LPVOID args)
 {
     WINDIVERT_ADDRESS addr;
     char packet[MAX_PACKET_SIZE];
     UINT packetLen;
     PARGS data = (PARGS)args;
-    debug("Straight\n");
-
+    debug(isForward ? "Forward\n" : "Straight\n");
     while (TRUE) {
-        if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
-            int packet_is_not_found = AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 0);
-
-            DWORD waitReadFlag = WaitForSingleObject(receivingPacketMutex, INFINITE);
-            if (packet_is_not_found || global_packet_is_not_found)
-            {
-                global_packet_is_not_found = TRUE;
-                ReleaseMutex(receivingPacketMutex);
-                break;
-            }
-            ReleaseMutex(receivingPacketMutex);
+        if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr))
+        {
+            AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 0);
         }
-        else {
+        else
+        {
             // error, ignore
             if (!exiting)
-                printf("Error receiving packet!\n");
+                printf("Error receiving packet!\nError: %d", GetLastError());
             break;
         }
     }
+}
+
+DWORD WinDivertRecvStraight(LPVOID args)
+{
+    WinDivertRecvHandling(FALSE, args);
     return 1;
 }
 
 DWORD WinDivertRecvForward(LPVOID args)
 {
-    WINDIVERT_ADDRESS addr;
-    char packet[MAX_PACKET_SIZE];
-    UINT packetLen;
-    PARGS data = (PARGS)args;
-    debug("Forward\n");
-
-    while (TRUE) {
-        if (WinDivertRecv(data->filter, packet, sizeof(packet), &packetLen, &addr)) {
-            int packet_is_not_found = AnalyzePacket(data->filter, packet, packetLen, addr, data->consts, 1);
-
-            DWORD waitReadFlag = WaitForSingleObject(receivingPacketMutex, INFINITE);
-            if (packet_is_not_found || global_packet_is_not_found)
-            {
-                global_packet_is_not_found = TRUE;
-                ReleaseMutex(receivingPacketMutex);
-                break;
-            }
-            ReleaseMutex(receivingPacketMutex);
-        }
-        else {
-            // error, ignore
-            if (!exiting)
-                printf("Error receiving packet!\n");
-            break;
-        }
-    }
+    WinDivertRecvHandling(TRUE, args);
     return 1;
 }
 
-void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc, char* const argv[])
+void WinDivertRecvAll(LPVOID args, int isForward)
+{
+    WINDIVERT_ADDRESS addr;
+    char packet[MAX_PACKET_SIZE];
+    UINT packetLen;
+    PHANDLE pAllPacketFilter = (PHANDLE)args;
+    while (TRUE)
+    {
+        int packetIsNotFound = FALSE;
+        if (WinDivertRecv(*pAllPacketFilter, packet, sizeof(packet), &packetLen, &addr))
+        {
+            packetIsNotFound = AddOrFindNewPacket(packet, packetLen, addr, isForward);
+            WinDivertSend(*pAllPacketFilter, packet, packetLen, NULL, &addr);
+
+            debug("============================================================\n");
+            debug(isForward ? "RecvForward:\n" : "RecvStraight:\n");
+            debug("packetIsNotFound = %d\n", packetIsNotFound);
+            DebugPrintList();
+            debug("============================================================\n");
+
+            if (packetIsNotFound)
+            {
+                /*DWORD waitReadFlag = WaitForSingleObject(receivingPacketMutex, INFINITE);
+                if (packetIsNotFound || GlobalPacketIsNotFound)
+                {
+                    GlobalPacketIsNotFound = TRUE;
+                    ReleaseMutex(receivingPacketMutex);
+                    break;
+                }
+                ReleaseMutex(receivingPacketMutex);*/
+                return;
+            }
+        }
+    }
+}
+
+DWORD WinDivertRecvAllStraight(LPVOID args)
+{
+    WinDivertRecvAll(args, FALSE);
+    return 1;
+}
+
+DWORD WinDivertRecvAllForward(LPVOID args)
+{
+    WinDivertRecvAll(args, TRUE);
+    return 1;
+}
+
+int firstLoad = TRUE;
+
+void TurnOnOrReloadGDPI(const int argc, char* const argv[], char* actualMode)
 {
     int i;
     int opt;
-    HANDLE w_filter = NULL, w_forward_filter = NULL;
+    HANDLE w_filter = NULL, w_forward_filter = NULL, w_all_packet_filter = NULL, w_all_packet_forward_filter = NULL;
 
     int do_passivedpi = 0, do_fragment_http = 0,
         do_fragment_http_persistent = 0,
@@ -1258,6 +1299,7 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
 
     if (argc == 1) {
         /* enable mode -5 by default */
+        *actualMode = '5';
         do_fragment_http = do_fragment_https = 1;
         do_reverse_frag = do_native_frag = 1;
         http_fragment_size = https_fragment_size = 2;
@@ -1564,6 +1606,8 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
                 " -6          -f 2 -e 2 --wrong-seq --reverse-frag --max-payload\n");
             exit(EXIT_FAILURE);
         }
+
+        *actualMode = opt;
     }
 
     if (!http_fragment_size)
@@ -1646,7 +1690,7 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
         filters[filter_num] = init(
             filter_passive_string,
             WINDIVERT_FLAG_DROP,
-            0);
+            FALSE, WINDIVERT_PRIORITY_HIGHEST);
         if (filters[filter_num] == NULL)
             die();
         ++filter_num;
@@ -1654,7 +1698,7 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
         filters[filter_num] = init(
             filter_passive_forward_string,
             WINDIVERT_FLAG_DROP,
-            1);
+            TRUE, WINDIVERT_PRIORITY_HIGHEST);
         if (filters[filter_num] == NULL)
             die();
         ++filter_num;
@@ -1665,12 +1709,25 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
      * active DPI circumvention
      */
 
-    filters[filter_num] = init(filter_string, 0, 0);
+    if (*actualMode != '6')
+    {
+        filters[filter_num] = init(all_packets_filter_string, 0, FALSE, WINDIVERT_PRIORITY_LOWEST);
+
+        w_all_packet_filter = filters[filter_num];
+        ++filter_num;
+
+        filters[filter_num] = init(all_packets_filter_string, 0, TRUE, WINDIVERT_PRIORITY_LOWEST);
+
+        w_all_packet_forward_filter = filters[filter_num];
+        ++filter_num;
+    }
+
+    filters[filter_num] = init(filter_string, 0, FALSE, 0);
 
     w_filter = filters[filter_num];
     ++filter_num;
 
-    filters[filter_num] = init(filter_forward_string, 0, 1);
+    filters[filter_num] = init(filter_forward_string, 0, TRUE, 0);
 
     w_forward_filter = filters[filter_num];
     ++filter_num;
@@ -1697,18 +1754,45 @@ void TurnOnOrReloadGDPI(const char* modes, const int modes_size, const int argc,
     pForwardArguments->consts = consts;
     pForwardArguments->filter = w_forward_filter;
 
-    DWORD dwStraightThreadId, dwForwardThreadId;
-    HANDLE hThreadArray[2] = {
-        CreateThread(NULL, 0, WinDivertRecvStraight, pStraightArguments, 0, &dwStraightThreadId),
-        CreateThread(NULL, 0, WinDivertRecvForward, pForwardArguments, 0, &dwForwardThreadId)
-    };
+    DWORD dwStraightThreadId, dwForwardThreadId, dwAllStraightThreadId, dwAllForwardThreadId;
+    size_t filterNumWithoutPassive = do_passivedpi ? filter_num - 2 : filter_num;
+    PHANDLE hThreadArray = (PHANDLE)malloc(sizeof(HANDLE) * (filterNumWithoutPassive));
 
-    WaitForMultipleObjects(2, hThreadArray, TRUE, INFINITE);
-    CloseHandle(hThreadArray[0]);
-    CloseHandle(hThreadArray[1]);
+    hThreadArray[0] = CreateThread(NULL, 0, WinDivertRecvAllStraight, &w_all_packet_filter, 0, &dwAllStraightThreadId);
+    hThreadArray[1] = CreateThread(NULL, 0, WinDivertRecvAllForward, &w_all_packet_forward_filter, 0, &dwAllForwardThreadId);
+    hThreadArray[2] = CreateThread(NULL, 0, WinDivertRecvStraight, pStraightArguments, 0, &dwStraightThreadId);
+    hThreadArray[3] = CreateThread(NULL, 0, WinDivertRecvForward, pForwardArguments, 0, &dwForwardThreadId);
+
+    WaitForMultipleObjects(filterNumWithoutPassive, hThreadArray, FALSE, INFINITE);
+    deinit_all();
+    for(size_t i = 0; i < filterNumWithoutPassive; ++i)
+        CloseHandle(hThreadArray[i]);
+    debug("Closed handles\n");
+    free(hThreadArray);
     free(pStraightArguments);
     free(pForwardArguments);
+}
 
+void ChangeModes(size_t* argumentSize, char*** actualArgv, char actualMode)
+{
+    debug("Changing\n");
+
+    int newSize = ++(*argumentSize);
+    *actualArgv = (char**)realloc(*actualArgv, sizeof(char*) * newSize);
+    (*actualArgv)[newSize - 1] = (char*)malloc(sizeof(char) * 3);
+
+    char modes[] = { '4', '3', '2', '1', '5', '6' };
+
+    size_t i = 0;
+    while (i < 5)
+        if (modes[i++] == actualMode)
+            break;
+
+    char* actualArgvLocal = (*actualArgv)[newSize - 1];
+    actualArgvLocal[0] = '-';
+    actualArgvLocal[1] = modes[i];
+    actualArgvLocal[2] = '\0';
+    debug("Changing mode to %c\n", actualArgvLocal[1]);
 }
 
 int main(int argc, char *argv[])
@@ -1743,6 +1827,8 @@ int main(int argc, char *argv[])
         filter_forward_string = strdup(FORWARD_FILTER_STRING_TEMPLATE);
     if (filter_passive_forward_string == NULL)
         filter_passive_forward_string = strdup(FILTER_PASSIVE_FORWARD_STRING_TEMPLATE);
+    if (all_packets_filter_string == NULL)
+        all_packets_filter_string = strdup(ALL_PACKETS_FILTER_STRING_TEMPLATE);
 
     if (get_subnet())
         return -1;
@@ -1753,31 +1839,31 @@ int main(int argc, char *argv[])
     replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_START_TEMPLATE, subnet_start);
     replace_template_and_clear_strings(&filter_passive_forward_string, SUBNET_END_TEMPLATE, subnet_end);
 
+    replace_template_and_clear_strings(&all_packets_filter_string, SUBNET_START_TEMPLATE, subnet_start);
+    replace_template_and_clear_strings(&all_packets_filter_string, SUBNET_END_TEMPLATE, subnet_end);
+
     printf(
         "GoodbyeDPI " GOODBYEDPI_VERSION
         ": Passive DPI blocker and Active DPI circumvention utility\n"
         "https://github.com/ValdikSS/GoodbyeDPI\n\n"
     );
 
-    const int modes_size = 5;
-    const char modes[modes_size] = { "", "" };
-    char** actual_mode = (char*)malloc(sizeof(char*) * argc);
-    int mode_number = argc;
-    receivingPacketMutex = CreateMutex(NULL, FALSE, NULL);
-    if (ghMutex == NULL)
-    {
-        debug("CreateMutex error: %d\n", GetLastError());
-        return 1;
-    }
+    char** actualArgv = (char**)malloc(sizeof(char*) * argc), actualMode;
+    size_t argumentSize = argc;
+    for (int i = 0; i < argc; ++i)
+        actualArgv[i] = strdup(argv[i]);
+
+#ifdef DEBUG
+    TestList();
+#endif // DEBUG
 
     do
     {
-        for (int i = 0; i < BUFFER_SIZE; ++i)
-            bufferDestIP[i] = 0;
-
-        TurnOnOrReloadGDPI(modes, modes_size, argc, actual_mode);
-        ClearModes(&actual_mode);
-        ChangeModes(&argc, &actual_mode);
+        TurnOnOrReloadGDPI(argumentSize, actualArgv, &actualMode);
+        ChangeModes(&argumentSize, &actualArgv, actualMode);
+        DebugPrintList();
+        ClearList();
+        debug("Cleared list\nargumentSize: %u, actualArgv[0]: %s, actualArgv[1]: %s, actualMode: %c\n", argumentSize, actualArgv[0], actualArgv[1], actualMode);
     }
     while (TRUE);
 }
