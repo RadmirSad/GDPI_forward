@@ -200,17 +200,24 @@ void TestErase()
 
     Erase(3);
     if (GlobalIpList.m_size != 3)
-        DEBUG_EXIT_TEST("Wrong size after \'Erase(3)\'");
+        DEBUG_EXIT_TEST("Wrong size after \'Erase(3)\', expected = 3");
     if (!GlobalIpList.m_head || GlobalIpList.m_head->ip != 0 || !GlobalIpList.m_head->m_next || GlobalIpList.m_head->m_next->ip != 1
         || !GlobalIpList.m_head->m_next->m_next || GlobalIpList.m_head->m_next->m_next->ip != 2 || GlobalIpList.m_head->m_next->m_next->m_next)
         DEBUG_EXIT_TEST("Wrong list\'s state after  \'Erase(3)\', expected HEAD->[0]->[1]->[2]->NULL");
 
     Erase(1);
     if (GlobalIpList.m_size != 2)
-        DEBUG_EXIT_TEST("Wrong size after \'Erase(1)\'");
+        DEBUG_EXIT_TEST("Wrong size after \'Erase(1)\', expected = 2");
     if(!GlobalIpList.m_head || GlobalIpList.m_head->ip != 0 || !GlobalIpList.m_head->m_next || GlobalIpList.m_head->m_next->ip != 2
         || GlobalIpList.m_head->m_next->m_next)
         DEBUG_EXIT_TEST("Wrong list\'s state after  \'Erase(1)\', expected HEAD->[0]->[2]->NULL");
+
+    Erase(4);
+    if (GlobalIpList.m_size != 2)
+        DEBUG_EXIT_TEST("Wrong size after \'Erase(4)\', expected = 2");
+    if (!GlobalIpList.m_head || GlobalIpList.m_head->ip != 0 || !GlobalIpList.m_head->m_next || GlobalIpList.m_head->m_next->ip != 2
+        || GlobalIpList.m_head->m_next->m_next)
+        DEBUG_EXIT_TEST("Wrong list\'s state after  \'Erase(4)\', expected HEAD->[0]->[2]->NULL");
 
     Erase(0);
     if(GlobalIpList.m_size != 1)
@@ -223,12 +230,6 @@ void TestErase()
         DEBUG_EXIT_TEST("Wrong size after \'Erase(0)\', expected = 0");
     if(GlobalIpList.m_head)
         DEBUG_EXIT_TEST("Wrong list\'s state after  \'Erase(0)\', expected HEAD->NULL");
-
-    Erase(4);
-    if (GlobalIpList.m_size != 0)
-        DEBUG_EXIT_TEST("Wrong size after \'Erase(4)\', expected = 0");
-    if (GlobalIpList.m_head)
-        DEBUG_EXIT_TEST("Wrong list\'s state after  \'Erase(4)\', expected HEAD->NULL");
 
     ClearList();
 }
